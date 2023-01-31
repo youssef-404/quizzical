@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState,useEffect } from "react";
+import Question from "./components/Question";
+import { nanoid } from 'nanoid'
 
-function App() {
+export default function App() {
+  const [quizStart,setQuizStart] =useState(!false)
+  const [questions,setQuestions]=useState([])
+
+  useEffect(()=>{
+    async function getQuestions() {
+      const res = await fetch("https://opentdb.com/api.php?amount=10")
+      const data = await res.json()
+      setQuestions(data.results)
+    }
+    getQuestions()
+  },[])
+
+  const questionElements=questions.map((question)=>{
+    return(
+      <Question
+      key={nanoid()}
+      {...question}
+      />
+    )
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="cercle cercle-up"></div>
+      <div className="cercle cercle-down"></div>
+    {quizStart?
+
+      <div className="second-page">
+        {questionElements}
+        <div className="buttons">
+          <button>Check answers</button>
+        </div>
+      </div>
+    :
+      <div className="first-page">
+        <h3>Quizzical</h3>
+        <p>Test your skills and see if you've got the winning answers!</p>
+        <button onClick={()=>setQuizStart(true)}>Start quiz</button>
+      </div>
+      }
+    </>
   );
 }
 
-export default App;
+
