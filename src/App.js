@@ -20,12 +20,14 @@ export default function App() {
       const questionData=data.results.map((element)=>{
         const allOptions=element.incorrect_answers.map(item=>{
           return({
+            optionId:nanoid(),
             value:decodeHtmlCharCodes(item),
           isCorrect:false,
           isChoosed:false
           })
         })
         allOptions.push({
+          optionId:nanoid(),
           value:decodeHtmlCharCodes(element.correct_answer),
               isCorrect:true,
               isChoosed:false
@@ -33,6 +35,7 @@ export default function App() {
   
       allOptions.sort(() => Math.random() - 0.5);
         return({
+          id:nanoid(),
           question:decodeHtmlCharCodes(element.question),
           options:allOptions
         })
@@ -40,13 +43,42 @@ export default function App() {
       setQuestions(questionData)
     }
     getQuestions()
-  },[])
+  },[0])
+
+  function toggleSelection(id,optionId){
+    setQuestions((prevQuestions)=>{
+      return prevQuestions.map((question)=>{
+        if(question.id===id){
+            return ({
+              ...question,
+              options:question.options.map(option=>{
+                return option.optionId!==optionId?
+                {
+                  ...option,
+                  isChoosed:false
+                }
+                :
+                {
+                  ...option,
+                  isChoosed:!option.isChoosed
+                }
+              })
+            })
+         
+
+        }else{
+         return question
+        }
+      })
+    })
+  }
 
   const questionElements=questions.map((question)=>{
     return(
       <Question
-      key={nanoid()}
+      key={question.id}
       {...question}
+      toggleSelection={toggleSelection}
       />
     )
   })

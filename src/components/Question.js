@@ -2,15 +2,16 @@ import Option from "./Option"
 import { useState } from "react"
 
 export default function Question(props){
-
+    // console.log(props.id)
     const optionElements =props.options.map((option)=>{
         return(
             <Option
-            {...option}  
+            key={option.optionId}
+            {...option}
+            toggleSelection={()=>props.toggleSelection(props.id,option.optionId)}  
             />
         )
     })
-    console.log(props)
     return(
         <div className="question-container">
             <h3 className="question">{props.question}</h3>
