@@ -6,11 +6,38 @@ export default function App() {
   const [quizStart,setQuizStart] =useState(!false)
   const [questions,setQuestions]=useState([])
 
+  const decodeHtmlCharCodes = str => {
+    const decodedString = document.createElement("textarea");
+    decodedString.innerHTML = str;
+    return decodedString.value;
+}
+
   useEffect(()=>{
     async function getQuestions() {
       const res = await fetch("https://opentdb.com/api.php?amount=10")
       const data = await res.json()
-      setQuestions(data.results)
+      
+      const questionData=data.results.map((element)=>{
+        const allOptions=element.incorrect_answers.map(item=>{
+          return({
+            value:decodeHtmlCharCodes(item),
+          isCorrect:false,
+          isChoosed:false
+          })
+        })
+        allOptions.push({
+          value:decodeHtmlCharCodes(element.correct_answer),
+              isCorrect:true,
+              isChoosed:false
+      })
+  
+      allOptions.sort(() => Math.random() - 0.5);
+        return({
+          question:decodeHtmlCharCodes(element.question),
+          options:allOptions
+        })
+      })
+      setQuestions(questionData)
     }
     getQuestions()
   },[])
