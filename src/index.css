@@ -80,6 +80,7 @@ button{
   color: #F5F7FB;
   box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
   user-select: none;
+  cursor: pointer;
 }
 
 button:active {
@@ -137,6 +138,33 @@ button:active {
   border: 1px solid #D6DBF5;
 }
 
+.option-incorrect{
+  background: #F8BCBC;
+  border: 1px solid #F8BCBC;
+  opacity: 0.5;
+}
+
+.option-correct{
+  background: #94D7A2;
+  border: 1px solid #94D7A2;
+  opacity: 1;
+}
+
 .buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
   text-align: center;
+}
+
+.buttons >p{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 15px;
+  text-align: center;
+  color: #293264;
+
 }

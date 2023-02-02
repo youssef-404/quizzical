@@ -8,7 +8,8 @@ export default function Question(props){
             <Option
             key={option.optionId}
             {...option}
-            toggleSelection={()=>props.toggleSelection(props.id,option.optionId)}  
+            toggleSelection={()=>props.toggleSelection(props.id,option.optionId)}
+            quizEnd={props.quizEnd}
             />
         )
     })

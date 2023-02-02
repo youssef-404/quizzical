@@ -3,7 +3,10 @@ import Question from "./components/Question";
 import { nanoid } from 'nanoid'
 
 export default function App() {
-  const [quizStart,setQuizStart] =useState(!false)
+  const [quizStart,setQuizStart] =useState(false)
+  const [quizEnd,setQuizEnd] =useState(false)
+  const [reset,setReset] =useState(false)
+  const [score,setScore] =useState(0)
   const [questions,setQuestions]=useState([])
 
   const decodeHtmlCharCodes = str => {
@@ -43,7 +46,7 @@ export default function App() {
       setQuestions(questionData)
     }
     getQuestions()
-  },[0])
+  },[reset])
 
   function toggleSelection(id,optionId){
     setQuestions((prevQuestions)=>{
@@ -73,12 +76,29 @@ export default function App() {
     })
   }
 
+  function checkResults(){
+    if(!quizEnd){
+      setQuizEnd(true)
+      questions.forEach((question)=>{
+        if(question.options.find(option=>option.isChoosed && option.isCorrect)){
+          setScore(prevScore=>prevScore+1)
+        }
+      })
+    }else{
+      setScore(0)
+      setQuizEnd(false)
+      setQuizStart(false)
+      setReset(prevState=>!prevState)
+    }
+  }
+
   const questionElements=questions.map((question)=>{
     return(
       <Question
       key={question.id}
       {...question}
       toggleSelection={toggleSelection}
+      quizEnd={quizEnd}
       />
     )
   })
@@ -92,7 +112,10 @@ export default function App() {
       <div className="second-page">
         {questionElements}
         <div className="buttons">
-          <button>Check answers</button>
+          {quizEnd?
+          <p>You scored {`${score}/${questions.length}`} correct answers</p>:""
+        }
+          <button onClick={checkResults}>{quizEnd?"New quiz":"Check answers"}</button>
         </div>
       </div>
     :
