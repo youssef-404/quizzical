@@ -49,9 +49,10 @@ export default function App() {
   },[reset])
 
   function toggleSelection(id,optionId){
-    setQuestions((prevQuestions)=>{
-      return prevQuestions.map((question)=>{
-        if(question.id===id){
+    if(!quizEnd){
+      setQuestions((prevQuestions)=>{
+        return prevQuestions.map((question)=>{
+          if(question.id===id){
             return ({
               ...question,
               options:question.options.map(option=>{
@@ -70,10 +71,11 @@ export default function App() {
          
 
         }else{
-         return question
+          return question
         }
       })
     })
+  }
   }
 
   function checkResults(){
