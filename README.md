@@ -1,4 +1,4 @@
-# TENZIES
+# Quizzical
 
 Welcome to Quizzical game! 
 Test your skills and see if you've got the winning answers!
