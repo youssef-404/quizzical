@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 export default function App() {
   const [quizStart,setQuizStart] =useState(false)
   const [quizEnd,setQuizEnd] =useState(false)
+  const [dataIsReady,setDataIsReady] =useState(false)
   const [reset,setReset] =useState(false)
   const [score,setScore] =useState(0)
   const [questions,setQuestions]=useState([])
@@ -44,6 +45,7 @@ export default function App() {
         })
       })
       setQuestions(questionData)
+      setDataIsReady(true)
     }
     getQuestions()
   },[reset])
@@ -88,6 +90,7 @@ export default function App() {
       })
     }else{
       setScore(0)
+      setDataIsReady(false)
       setQuizEnd(false)
       setQuizStart(false)
       setReset(prevState=>!prevState)
@@ -124,7 +127,7 @@ export default function App() {
       <div className="first-page">
         <h3>Quizzical</h3>
         <p>Test your skills and see if you've got the winning answers!</p>
-        <button onClick={()=>setQuizStart(true)}>Start quiz</button>
+        <button onClick={()=>dataIsReady && setQuizStart(true)}>Start quiz</button>
       </div>
       }
     </>

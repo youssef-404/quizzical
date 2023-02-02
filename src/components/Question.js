@@ -1,8 +1,6 @@
 import Option from "./Option"
-import { useState } from "react"
 
 export default function Question(props){
-    // console.log(props.id)
     const optionElements =props.options.map((option)=>{
         return(
             <Option
